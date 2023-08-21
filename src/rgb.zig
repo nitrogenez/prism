@@ -13,6 +13,14 @@ pub const RGB = struct {
         return self.r == other.r and self.g == other.g and self.b == other.b;
     }
 
+    pub fn normalized(self: *const RGB) RGB {
+        return .{
+            .r = self.r / 255.0,
+            .g = self.g / 255.0,
+            .b = self.b / 255.0,
+        };
+    }
+
     pub fn lighten(self: *const Self, factor: f32) RGB {
         return .{
             .r = @min(255.0, self.r + 255.0 * factor),
