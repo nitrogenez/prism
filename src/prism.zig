@@ -9,3 +9,4 @@ pub const HSV = @import("hsv.zig").HSV;
 pub const YIQ = @import("yiq.zig").YIQ;
 pub const CMYK = @import("cmyk.zig").CMYK;
 pub const HSI = @import("hsi.zig").HSI;
+pub const LAB = @import("lab.zig").LAB;
