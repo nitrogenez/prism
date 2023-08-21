@@ -1,5 +1,6 @@
 const HSV = @import("hsv.zig").HSV;
 const HSL = @import("hsl.zig").HSL;
+const YIQ = @import("yiq.zig").YIQ;
 
 pub const RGB = struct {
     const Self = @This();
@@ -10,10 +11,6 @@ pub const RGB = struct {
 
     pub fn eql(self: *const Self, other: *const Self) bool {
         return self.r == other.r and self.g == other.g and self.b == other.b;
-    }
-
-    pub fn toHSV(rgb: *const Self) HSV {
-        return HSV.fromRGB(rgb);
     }
 
     pub fn lighten(self: *const Self, factor: f32) RGB {
@@ -115,6 +112,18 @@ pub const RGB = struct {
             },
         }
         return rgb;
+    }
+
+    pub fn toHSV(rgb: *const Self) HSV {
+        return HSV.fromRGB(rgb);
+    }
+
+    pub fn toHSL(self: *const Self) HSL {
+        return HSL.fromRGB(self);
+    }
+
+    pub fn toYIQ(self: *const Self) YIQ {
+        return YIQ.fromRGB(self);
     }
 
     pub fn toHEX(self: *const Self) i32 {
