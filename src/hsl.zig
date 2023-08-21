@@ -1,10 +1,23 @@
 const std = @import("std");
+
 const RGB = @import("rgb.zig").RGB;
+const HSV = @import("hsv.zig").HSV;
+const YIQ = @import("yiq.zig").YIQ;
 
 pub const HSL = struct {
     h: f32 = 0.0,
     s: f32 = 0.0,
     l: f32 = 0.0,
+
+    pub fn toHSV(self: *const HSL) HSV {
+        const rgb = self.toRGB();
+        return HSV.fromRGB(&rgb);
+    }
+
+    pub fn toYIQ(self: *const HSL) YIQ {
+        const rgb = self.toRGB();
+        return YIQ.fromRGB(&rgb);
+    }
 
     pub fn toRGB(hsl: *const HSL) !RGB {
         const h: i32 = @as(i32, @intFromFloat(hsl.h));
@@ -17,30 +30,24 @@ pub const HSL = struct {
         var rgb = RGB{};
 
         if (h >= 0 and h < 60) {
-            rgb.r = c;
-            rgb.g = x;
-            rgb.b = 0.0;
+            rgb = .{ .r = c, .g = x, .b = 0.0 };
         } else if (h >= 60 and h < 120) {
-            rgb.r = x;
-            rgb.g = c;
-            rgb.b = 0;
+            rgb = .{ .r = x, .g = c, .b = 0.0 };
         } else if (h >= 120 and h < 180) {
-            rgb.r = 0;
-            rgb.g = c;
-            rgb.b = x;
+            rgb = .{ .r = 0.0, .g = c, .b = x };
         } else if (h >= 180 and h < 240) {
-            rgb = RGB{ .r = 0, .g = x, .b = c };
+            rgb = .{ .r = 0, .g = x, .b = c };
         } else if (h >= 240 and h < 300) {
-            rgb = RGB{ .r = x, .g = 0, .b = c };
+            rgb = .{ .r = x, .g = 0, .b = c };
         } else if (h >= 300 and h < 360) {
             rgb = .{ .r = c, .g = 0, .b = x };
         }
 
-        rgb.r = (rgb.r + m) * 255.0;
-        rgb.g = (rgb.g + m) * 255.0;
-        rgb.b = (rgb.b + m) * 255.0;
-
-        return rgb;
+        return .{
+            .r = (rgb.r + m) * 255.0,
+            .g = (rgb.g + m) * 255.0,
+            .b = (rgb.b + m) * 255.0,
+        };
     }
 
     pub fn fromRGB(rgb: *const RGB) HSL {
