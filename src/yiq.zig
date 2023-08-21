@@ -1,4 +1,7 @@
 const RGB = @import("rgb.zig").RGB;
+const HSL = @import("hsl.zig").HSL;
+const HSV = @import("hsv.zig").HSV;
+
 const math = @import("std").math;
 
 pub const YIQ = struct {
@@ -7,6 +10,16 @@ pub const YIQ = struct {
     y: f32 = 0.0,
     i: f32 = 0.0,
     q: f32 = 0.0,
+
+    pub fn toHSL(self: *const Self) HSL {
+        const rgb = self.toRGB();
+        return HSL.fromRGB(&rgb);
+    }
+
+    pub fn toHSV(self: *const Self) HSV {
+        const rgb = self.toRGB();
+        return HSV.fromRGB(&rgb);
+    }
 
     pub fn fromRGB(rgb: *const RGB) YIQ {
         const y: f32 = (0.30 * rgb.r) + (0.59 * rgb.g) + (0.11 * rgb.b);
