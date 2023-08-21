@@ -1,4 +1,4 @@
-const conf = @import("config.zig");
+const conf = @import("../config.zig");
 
 const RGB = @import("rgb.zig").RGB;
 const HSL = @import("hsl.zig").HSL;

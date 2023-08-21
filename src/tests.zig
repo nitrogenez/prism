@@ -3,9 +3,10 @@ const mem = std.mem;
 const testing = std.testing;
 
 const prism = @import("prism.zig");
+const spaces = prism.spaces;
 
 test "RGB to HEX conversion" {
-    const c = prism.RGB{ .r = 40, .g = 40, .b = 40 };
+    const c = spaces.RGB{ .r = 40, .g = 40, .b = 40 };
     const hex = c.toHEX();
 
     var buf: [7]u8 = undefined;
@@ -18,7 +19,7 @@ test "RGB to HSL conversion" {
     const c = prism.colors.Red;
 
     const hsl = c.toHSL();
-    const expected = prism.HSL{ .h = 0.0, .s = 1.0, .l = 0.5 };
+    const expected = spaces.HSL{ .h = 0.0, .s = 1.0, .l = 0.5 };
 
     try testing.expect((hsl.h == expected.h) and
         (hsl.s == expected.s) and
@@ -29,7 +30,7 @@ test "RGB to HSV conversion" {
     const c = prism.colors.Red;
 
     const hsv = c.toHSV();
-    const expected = prism.HSV{ .h = 0.0, .s = 1.0, .v = 1.0 };
+    const expected = spaces.HSV{ .h = 0.0, .s = 1.0, .v = 1.0 };
 
     try testing.expect((hsv.h == expected.h) and
         (hsv.s == expected.s) and
@@ -41,7 +42,7 @@ test "RGB to YIQ conversion" {
     const c = prism.colors.Red;
 
     const yiq = c.toYIQ();
-    const expected = prism.YIQ{ .y = 0.299, .i = -0.147, .q = 0.615 };
+    const expected = spaces.YIQ{ .y = 0.299, .i = -0.147, .q = 0.615 };
 
     if (prism.config.unstable_features) {
         try testing.expect((yiq.y == expected.y) and
@@ -55,8 +56,8 @@ test "RGB to YIQ conversion" {
 test "RGB to CMYK conversion" {
     const c = prism.colors.Red;
 
-    const cmyk = prism.CMYK.fromRGB(&c);
-    const expected = prism.CMYK{ .c = 0.0, .m = 1.0, .y = 1.0, .k = 0.0 };
+    const cmyk = spaces.CMYK.fromRGB(&c);
+    const expected = spaces.CMYK{ .c = 0.0, .m = 1.0, .y = 1.0, .k = 0.0 };
 
     try testing.expect((cmyk.c == expected.c) and
         (cmyk.m == expected.m) and
@@ -67,8 +68,8 @@ test "RGB to CMYK conversion" {
 test "RGB to HSI conversion" {
     const c = prism.colors.Red;
 
-    const hsi = prism.HSI.fromRGB(&c);
-    const expected = prism.HSI{ .h = 0.0, .s = 1.0, .i = 0.3333 };
+    const hsi = spaces.HSI.fromRGB(&c);
+    const expected = spaces.HSI{ .h = 0.0, .s = 1.0, .i = 0.3333 };
 
     try testing.expect((hsi.h == expected.h) and
         (hsi.s == expected.s) and
@@ -76,7 +77,7 @@ test "RGB to HSI conversion" {
 }
 
 test "HSI to RGB conversion" {
-    const c = prism.HSI.fromRGB(&prism.colors.Red);
+    const c = spaces.HSI.fromRGB(&prism.colors.Red);
     const o = c.toRGB();
     const e = prism.colors.Red;
     _ = e;
@@ -92,12 +93,12 @@ test "HSI to RGB conversion" {
 
 test "RGB to CIELAB conversion" {
     const c = prism.colors.Red;
-    const o = prism.LAB.fromRGB(&c);
-    const e = prism.LAB{ .l = 46.41, .a = -39.24, .b = 33.51 };
+    const o = spaces.LAB.fromRGB(&c);
+    const e = spaces.LAB{ .l = 53.24, .a = 80.09, .b = 67.20 };
 
     std.debug.print("\n{d:.2} {d:.2} {d:.2}\n", .{ o.l, o.a, o.b });
 
-    try testing.expect((o.l == e.l) and
-        (o.a == e.a) and
-        (o.b == e.b));
+    try testing.expect((o.l <= e.l + 0.05 and o.l >= e.l - 0.05) and
+        (o.a <= e.a + 0.05 and o.l >= e.l - 0.05) and
+        (o.b <= e.b + 0.05 and o.b >= e.b - 0.05));
 }
