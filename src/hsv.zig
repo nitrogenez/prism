@@ -1,4 +1,6 @@
 const RGB = @import("rgb.zig").RGB;
+const HSL = @import("hsl.zig").HSL;
+const YIQ = @import("yiq.zig").YIQ;
 
 pub const HSV = struct {
     const Self = @This();
@@ -7,25 +9,14 @@ pub const HSV = struct {
     s: f32 = 0.0,
     v: f32 = 0.0,
 
-    pub fn eql(self: *const Self, other: *const Self) bool {
-        return self.h == other.h and self.s == other.s and self.v == other.v;
+    pub fn toHSL(self: *const Self) HSL {
+        const rgb = self.toRGB();
+        return HSL.fromRGB(&rgb);
     }
 
-    pub fn lighten(self: *const Self, factor: f32) HSV {
-        var c1 = RGB.fromHSV(self);
-        return HSV.fromRGB(&c1.lighten(factor));
-    }
-
-    pub fn darken(self: *const Self, factor: f32) HSV {
-        var c1 = RGB.fromHSV(self);
-        return HSV.fromRGB(&c1.darken(factor));
-    }
-
-    pub fn blend(self: *const Self, other: *const Self) HSV {
-        var c1 = RGB.fromHSV(self);
-        var c2 = RGB.fromHSV(other);
-
-        return HSV.fromRGB(&c1.blend(&c2));
+    pub fn toYIQ(self: *const Self) YIQ {
+        const rgb = self.toRGB();
+        return YIQ.fromRGB(&rgb);
     }
 
     // https://www.rapidtables.com/convert/color/rgb-to-hsv.html
