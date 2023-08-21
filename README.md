@@ -1,0 +1,2 @@
+# Prism
+Prism is a utility library written in Zig for managing colors and converting color spaces. For now it supports a few colorspaces, including: RGB, YIQ, HSV, and HSL. There are several colorspaces in development, including RGBA, CMYK, etc.
