@@ -1,7 +1,4 @@
-pub const RGB = @import("rgb.zig").RGB;
-pub const HSV = @import("hsv.zig").HSV;
-pub const HSL = @import("hsl.zig").HSL;
-pub const YIQ = @import("yiq.zig").YIQ;
+const RGB = @import("rgb.zig").RGB;
 
 pub const Red = RGB{ .r = 255 };
 pub const Green = RGB{ .g = 255 };
