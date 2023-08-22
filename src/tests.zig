@@ -1,6 +1,7 @@
 const std = @import("std");
 const mem = std.mem;
 const testing = std.testing;
+const print = std.debug.print;
 
 const prism = @import("prism.zig");
 const spaces = prism.spaces;
@@ -26,79 +27,89 @@ test "RGB to HSL conversion" {
         (hsl.l == expected.l));
 }
 
-test "RGB to HSV conversion" {
+test "RGB->HSV" {
     const c = prism.colors.Red;
+    const o = c.toHSV();
+    const e = spaces.HSV{ .h = 0.0, .s = 1.0, .v = 1.0 };
 
-    const hsv = c.toHSV();
-    const expected = spaces.HSV{ .h = 0.0, .s = 1.0, .v = 1.0 };
+    print("\n  Input: RGB ({d}, {d}, {d})\n", .{ c.r, c.g, c.b });
+    print("  Output: HSV ({d:.2}, {d:.2}, {d:.2})\n", .{ o.h, o.s, o.v });
 
-    try testing.expect((hsv.h == expected.h) and
-        (hsv.s == expected.s) and
-        (hsv.v == expected.v));
+    try testing.expect((o.h == e.h) and (o.s == e.s) and (o.v == e.v));
 }
 
-// BROKEN
-test "RGB to YIQ conversion" {
+test "RGB->YIQ" {
+    prism.config.unstable_features = true;
+
     const c = prism.colors.Red;
+    const o = c.toYIQ();
+    const e = spaces.YIQ{ .y = 0.30, .i = 0.60, .q = 0.21 };
 
-    const yiq = c.toYIQ();
-    const expected = spaces.YIQ{ .y = 0.299, .i = -0.147, .q = 0.615 };
+    print("\n  Input: RGB ({d:.0}, {d:.0}, {d:.0})\n", .{ c.r, c.g, c.b });
+    print("  Output: YIQ ({d:.2}, {d:.2}, {d:.2})\n", .{ o.y, o.i, o.q });
 
-    if (prism.config.unstable_features) {
-        try testing.expect((yiq.y == expected.y) and
-            (yiq.i == expected.i) and
-            (yiq.q == expected.q));
-    } else {
-        try testing.expect(true);
-    }
+    try testing.expect((o.y == e.y) and (o.i == e.i) and (o.q == e.q));
 }
 
-test "RGB to CMYK conversion" {
+test "RGB->CMYK" {
     const c = prism.colors.Red;
+    const o = spaces.CMYK.fromRGB(&c);
+    const e = spaces.CMYK{ .c = 0.0, .m = 1.0, .y = 1.0, .k = 0.0 };
 
-    const cmyk = spaces.CMYK.fromRGB(&c);
-    const expected = spaces.CMYK{ .c = 0.0, .m = 1.0, .y = 1.0, .k = 0.0 };
+    print("\n  Input : RGB ({d:.0}, {d:.0}, {d:.0})\n", .{ c.r, c.g, c.b });
+    print("  Output: CMYK ({d:.2}, {d:.2}, {d:.2}, {d:.2})\n", .{ o.c, o.m, o.y, o.k });
 
-    try testing.expect((cmyk.c == expected.c) and
-        (cmyk.m == expected.m) and
-        (cmyk.y == expected.y) and
-        (cmyk.k == expected.k));
+    try testing.expect((o.c == e.c) and (o.m == e.m) and (o.y == e.y) and (o.k == e.k));
 }
 
-test "RGB to HSI conversion" {
+test "RGB->HSI" {
     const c = prism.colors.Red;
+    const o = spaces.HSI.fromRGB(&c);
+    const e = spaces.HSI{ .h = 0.0, .s = 1.0, .i = 0.3333 };
 
-    const hsi = spaces.HSI.fromRGB(&c);
-    const expected = spaces.HSI{ .h = 0.0, .s = 1.0, .i = 0.3333 };
+    print("\n  Input : RGB ({d:.0}, {d:.0}, {d:.0})\n", .{ c.r, c.g, c.b });
+    print("  Output: HSI ({d:.2}, {d:.2}, {d:.2})\n", .{ o.h, o.s, o.i });
 
-    try testing.expect((hsi.h == expected.h) and
-        (hsi.s == expected.s) and
-        (hsi.i >= expected.i - 0.05 and hsi.i <= expected.i + 0.05));
+    try testing.expect((o.h == e.h) and (o.s == e.s) and
+        (o.i >= e.i - 0.05 and o.i <= e.i + 0.05));
 }
 
-test "HSI to RGB conversion" {
+test "HSI->RGB" {
     const c = spaces.HSI.fromRGB(&prism.colors.Red);
     const o = c.toRGB();
     const e = prism.colors.Red;
     _ = e;
 
-    std.debug.print("\n{d:.0} {d:.0} {d:.0}\n", .{ o.r, o.g, o.b });
-    std.debug.print("{d:.2} {d:.2} {d:.2}\n", .{ c.h, c.s, c.i });
-    // std.debug.print("{} {} {}", .{ o.r, o.g, o.b });
+    print("\n  Input : HSI ({d:.0}, {d:.0}, {d:.0})\n", .{ c.h, c.s, c.i });
+    print("  Output: RGB ({d:.0}, {d:.0}, {d:.0})\n", .{ o.r, o.g, o.b });
+
+    // print("{} {} {}", .{ o.r, o.g, o.b });
 
     // try testing.expect((o.r == e.r) and
     //     (o.g == e.g) and
     //     (o.b == e.b));
 }
 
-test "RGB to CIELAB conversion" {
+test "RGB->LAB" {
     const c = prism.colors.Red;
     const o = spaces.LAB.fromRGB(&c);
     const e = spaces.LAB{ .l = 53.24, .a = 80.09, .b = 67.20 };
 
-    std.debug.print("\n{d:.2} {d:.2} {d:.2}\n", .{ o.l, o.a, o.b });
+    print("\n  Input : RGB ({d:.0}, {d:.0}, {d:.0})\n", .{ c.r, c.g, c.b });
+    print("  Output: LAB ({d:.2}, {d:.2}, {d:.2})\n", .{ o.l, o.a, o.b });
 
     try testing.expect((o.l <= e.l + 0.05 and o.l >= e.l - 0.05) and
         (o.a <= e.a + 0.05 and o.l >= e.l - 0.05) and
         (o.b <= e.b + 0.05 and o.b >= e.b - 0.05));
+}
+
+test "LAB->RGB" {
+    const c = prism.colors.Red;
+    const lab = spaces.LAB.fromRGB(&c);
+    const o = lab.toRGB();
+
+    print("\n  Input : LAB ({d:.2}, {d:.2}, {d:.2})\n", .{ lab.l, lab.a, lab.b });
+    print("  Output: RGB ({d:.2}, {d:.2}, {d:.2})\n", .{ o.r, o.g, o.b });
+
+    try testing.expect((o.r == c.r) and (o.g == c.g) and (o.b == c.b));
 }
