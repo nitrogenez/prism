@@ -20,6 +20,13 @@ pub fn build(b: *std.Build) void {
 
     const prism_mod = b.createModule(.{ .source_file = .{ .path = "src/prism.zig" } });
 
+    const shades = b.addExecutable(.{
+        .name = "shades",
+        .root_source_file = .{ .path = "src/shades.zig" },
+        .target = target,
+        .optimize = optimize,
+    });
+
     const rainbow = b.addExecutable(.{
         .name = "rainbow",
         .root_source_file = .{ .path = "src/rainbow.zig" },
@@ -27,10 +34,12 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
     rainbow.addModule("prism", prism_mod);
+    shades.addModule("prism", prism_mod);
 
     b.installArtifact(lib);
     b.installArtifact(lib_shared);
     b.installArtifact(rainbow);
+    b.installArtifact(shades);
 
     const main_tests = b.addTest(.{
         .root_source_file = .{ .path = "src/tests.zig" },
