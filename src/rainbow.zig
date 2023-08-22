@@ -29,6 +29,7 @@ pub fn main() !void {
     }
 
     var cols = std.ArrayList(RGB).init(std.heap.page_allocator);
+    defer cols.deinit();
 
     try cols.append(.{ .r = 255 });
     try cols.append(.{ .r = 255, .g = 127 });

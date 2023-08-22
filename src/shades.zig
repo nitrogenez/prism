@@ -11,6 +11,9 @@ pub fn main() !void {
     var cols = std.ArrayList(prism.spaces.RGB).init(std.heap.page_allocator);
     var cols1 = std.ArrayList(prism.spaces.RGB).init(std.heap.page_allocator);
 
+    defer cols.deinit();
+    defer cols1.deinit();
+
     var factor: f32 = 0.0;
     for (0..9) |i| {
         _ = i;
