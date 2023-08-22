@@ -8,12 +8,53 @@ pub const LAB = struct {
     a: f32 = 0.0,
     b: f32 = 0.0,
 
-    // It is also broken.
-    // I have no clue how that thing works. Almost.
-    // I don't know where the magic numbers come from,
-    // and don't know what they mean either.
-    // The calculations are off just a little bit,
-    // but still I will make it work. It's my main concern for now.
+    pub fn toRGB(self: *const LAB) RGB {
+        var xyz: [3]f32 = undefined;
+        var rgb: [3]f32 = undefined;
+
+        xyz[1] = (self.l + 16.0) / 116.0;
+        xyz[0] = self.a / 500.0 + xyz[1];
+        xyz[2] = xyz[1] - self.b / 200.0;
+
+        for (xyz, 0..) |c, i| {
+            if (math.pow(f32, c, 3) > 0.008856) {
+                xyz[i] = math.pow(f32, c, 3);
+            } else {
+                xyz[i] = (c - 16.0 / 116.0) / 7.787;
+            }
+        }
+
+        const x: f32 = 95.047 * xyz[0];
+        const y: f32 = 100.000 * xyz[1];
+        const z: f32 = 100.000 * xyz[2];
+
+        xyz[0] = x / 100.0;
+        xyz[1] = y / 100.0;
+        xyz[2] = z / 100.0;
+
+        rgb[0] = xyz[0] * 3.2406 + xyz[1] * -1.5372 + xyz[2] * -0.4986;
+        rgb[1] = xyz[0] * -0.9689 + xyz[1] * 1.8758 + xyz[2] * 0.0415;
+        rgb[2] = xyz[0] * 0.0557 + xyz[1] * -0.2040 + xyz[2] * 1.0570;
+
+        for (rgb, 0..) |c, i| {
+            if (c > 0.0031308) {
+                rgb[i] = 1.055 * math.pow(f32, c, (1.0 / 2.4)) - 0.055;
+            } else {
+                rgb[i] = 12.92 * c;
+            }
+        }
+
+        rgb[0] *= 255.0;
+        rgb[1] *= 255.0;
+        rgb[2] *= 255.0;
+
+        rgb[0] = math.clamp(math.floor(rgb[0]), 0.0, 255.0);
+        rgb[1] = math.clamp(math.floor(rgb[1]), 0.0, 255.0);
+        rgb[2] = math.clamp(math.floor(rgb[2]), 0.0, 255.0);
+
+        return .{ .r = rgb[0], .g = rgb[1], .b = rgb[2] };
+    }
+
     pub fn fromRGB(from: *const RGB) LAB {
         var xyz: [3]f32 = undefined;
         var lab = LAB{};
