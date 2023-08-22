@@ -113,3 +113,17 @@ test "LAB->RGB" {
 
     try testing.expect((o.r == c.r) and (o.g == c.g) and (o.b == c.b));
 }
+
+test "ASCII color printing" {
+    const r = prism.colors.Red;
+    const g = prism.colors.Green;
+    const b = prism.colors.Blue;
+    const vv = prism.colors.VelvetViolet;
+    const pp = prism.colors.PacificPink;
+
+    print("\n\x1b[38;2;{d:.0};{d:.0};{d:.0}m  Red\x1b[0m", .{ r.r, r.g, r.b });
+    print("\x1b[38;2;{d:.0};{d:.0};{d:.0}m  Green\x1b[0m", .{ g.r, g.g, g.b });
+    print("\x1b[38;2;{d:.0};{d:.0};{d:.0}m  Blue\x1b[0m", .{ b.r, b.g, b.b });
+    print("\x1b[38;2;{d:.0};{d:.0};{d:.0}m  Velvet Violet\x1b[0m", .{ vv.r, vv.g, vv.b });
+    print("\x1b[38;2;{d:.0};{d:.0};{d:.0}m  Pacific Pink\x1b[0m\n", .{ pp.r, pp.g, pp.b });
+}

@@ -18,8 +18,19 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
 
+    const prism_mod = b.createModule(.{ .source_file = .{ .path = "src/prism.zig" } });
+
+    const rainbow = b.addExecutable(.{
+        .name = "rainbow",
+        .root_source_file = .{ .path = "src/rainbow.zig" },
+        .target = target,
+        .optimize = optimize,
+    });
+    rainbow.addModule("prism", prism_mod);
+
     b.installArtifact(lib);
     b.installArtifact(lib_shared);
+    b.installArtifact(rainbow);
 
     const main_tests = b.addTest(.{
         .root_source_file = .{ .path = "src/tests.zig" },
