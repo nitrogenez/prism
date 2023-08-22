@@ -1,23 +1,11 @@
 const std = @import("std");
 
 const RGB = @import("rgb.zig").RGB;
-const HSV = @import("hsv.zig").HSV;
-const YIQ = @import("yiq.zig").YIQ;
 
 pub const HSL = struct {
     h: f32 = 0.0,
     s: f32 = 0.0,
     l: f32 = 0.0,
-
-    pub fn toHSV(self: *const HSL) HSV {
-        const rgb = self.toRGB();
-        return HSV.fromRGB(&rgb);
-    }
-
-    pub fn toYIQ(self: *const HSL) YIQ {
-        const rgb = self.toRGB();
-        return YIQ.fromRGB(&rgb);
-    }
 
     pub fn toRGB(hsl: *const HSL) !RGB {
         const h: i32 = @as(i32, @intFromFloat(hsl.h));

@@ -1,6 +1,9 @@
+const HSI = @import("hsi.zig").HSI;
 const HSV = @import("hsv.zig").HSV;
 const HSL = @import("hsl.zig").HSL;
 const YIQ = @import("yiq.zig").YIQ;
+const LAB = @import("lab.zig").LAB;
+const CMYK = @import("cmyk.zig").CMYK;
 
 pub const RGB = struct {
     const Self = @This();
@@ -122,12 +125,40 @@ pub const RGB = struct {
         return rgb;
     }
 
+    pub fn fromHSL(from: *const HSL) RGB {
+        return HSL.toRGB(from);
+    }
+
+    pub fn fromHSI(from: *const HSI) RGB {
+        return HSI.toRGB(from);
+    }
+
+    pub fn fromLAB(from: *const LAB) RGB {
+        return LAB.toRGB(from);
+    }
+
+    pub fn fromCMYK(from: *const CMYK) RGB {
+        return CMYK.toRGB(from);
+    }
+
     pub fn toHSV(rgb: *const Self) HSV {
         return HSV.fromRGB(rgb);
     }
 
     pub fn toHSL(self: *const Self) HSL {
         return HSL.fromRGB(self);
+    }
+
+    pub fn toHSI(self: *const RGB) HSI {
+        return HSI.fromRGB(self);
+    }
+
+    pub fn toLAB(self: *const RGB) LAB {
+        return LAB.fromRGB(self);
+    }
+
+    pub fn toCMYK(self: *const CMYK) CMYK {
+        return CMYK.fromRGB(self);
     }
 
     pub fn toYIQ(self: *const Self) YIQ {

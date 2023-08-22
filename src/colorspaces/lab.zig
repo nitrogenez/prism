@@ -1,4 +1,5 @@
 const std = @import("std");
+
 const RGB = @import("rgb.zig").RGB;
 
 const math = std.math;

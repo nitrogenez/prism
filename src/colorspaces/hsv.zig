@@ -9,16 +9,6 @@ pub const HSV = struct {
     s: f32 = 0.0,
     v: f32 = 0.0,
 
-    pub fn toHSL(self: *const Self) HSL {
-        const rgb = self.toRGB();
-        return HSL.fromRGB(&rgb);
-    }
-
-    pub fn toYIQ(self: *const Self) YIQ {
-        const rgb = self.toRGB();
-        return YIQ.fromRGB(&rgb);
-    }
-
     // https://www.rapidtables.com/convert/color/rgb-to-hsv.html
     pub fn fromRGB(rgb: *const RGB) HSV {
         const r1: f32 = rgb.r / 255.0;
