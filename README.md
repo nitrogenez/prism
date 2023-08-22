@@ -1,5 +1,9 @@
 <img src="common/assets/Prism_Banner.svg"/>
 
+![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/nitrogenez/prism/ci.yml?style=flat-square&logo=github&labelColor=040b0b&color=8fdff0)
+![License](https://img.shields.io/github/license/nitrogenez/prism?style=flat-square&logo=freebsd&labelColor=040b0b&color=8fdff0)
+![Language](https://img.shields.io/badge/_-pure_zig-blue?style=flat-square&logo=zig&logoColor=white&labelColor=040b0b&color=8fdff0)
+
 # Description
 
 Prism is a utility library for managing colors and colorspaces written in Zig.  
