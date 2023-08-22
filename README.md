@@ -41,4 +41,4 @@ To build Prism as a standalone library you must need Zig 0.11.0. Then just go in
 | RGB        | **FULL**    |
 
 # License
-Prism is licensed under a **BSD-3-Clause "New" or "Refined" license**. See [LICENSE](LICENSE) to learn more.
+Prism is licensed under a **BSD-3-Clause "New" or "Revised" License**. See [LICENSE](LICENSE) to learn more.
