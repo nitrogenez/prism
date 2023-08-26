@@ -1,7 +1,5 @@
 const std = @import("std");
 
-pub const config = @import("config.zig");
-
 pub const spaces = struct {
     pub const RGB = @import("colorspaces/rgb.zig").RGB;
     pub const HSL = @import("colorspaces/hsl.zig").HSL;
