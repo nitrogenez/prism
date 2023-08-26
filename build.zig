@@ -1,6 +1,7 @@
 const std = @import("std");
 
 pub fn build(b: *std.Build) void {
+    const lib_version = std.SemanticVersion.parse("0.1.4") catch unreachable;
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
@@ -9,6 +10,7 @@ pub fn build(b: *std.Build) void {
         .root_source_file = .{ .path = "src/prism.zig" },
         .target = target,
         .optimize = optimize,
+        .version = lib_version,
     });
 
     const lib_shared = b.addSharedLibrary(.{
@@ -16,10 +18,8 @@ pub fn build(b: *std.Build) void {
         .root_source_file = .{ .path = "src/prism.zig" },
         .target = target,
         .optimize = optimize,
+        .version = lib_version,
     });
-
-    lib.linkLibC();
-    lib_shared.linkLibC();
 
     const prism_mod = b.createModule(.{ .source_file = .{ .path = "src/prism.zig" } });
 
