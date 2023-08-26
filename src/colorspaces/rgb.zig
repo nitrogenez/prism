@@ -4,15 +4,14 @@ const HSL = @import("hsl.zig").HSL;
 const YIQ = @import("yiq.zig").YIQ;
 const LAB = @import("lab.zig").LAB;
 const CMYK = @import("cmyk.zig").CMYK;
+const XYZ = @import("xyz.zig").XYZ;
 
 pub const RGB = struct {
-    const Self = @This();
-
     r: f32 = 0.0,
     g: f32 = 0.0,
     b: f32 = 0.0,
 
-    pub fn eql(self: *const Self, other: *const Self) bool {
+    pub fn eql(self: *const RGB, other: *const RGB) bool {
         return self.r == other.r and self.g == other.g and self.b == other.b;
     }
 
@@ -24,15 +23,15 @@ pub const RGB = struct {
         };
     }
 
-    pub fn lighten(self: *const Self, factor: f32) RGB {
+    pub fn lighten(self: *const RGB, factor: f32) RGB {
         return .{
-            .r = @min(255.0, self.r + 255.0 * factor),
-            .g = @min(255.0, self.g + 255.0 * factor),
-            .b = @min(255.0, self.b + 255.0 * factor),
+            .r = @min(255.0, self.r * factor),
+            .g = @min(255.0, self.g * factor),
+            .b = @min(255.0, self.b * factor),
         };
     }
 
-    pub fn darken(self: *const Self, factor: f32) RGB {
+    pub fn darken(self: *const RGB, factor: f32) RGB {
         return .{
             .r = @min(255.0, self.r * (1.0 - factor)),
             .g = @min(255.0, self.g * (1.0 - factor)),
@@ -40,7 +39,7 @@ pub const RGB = struct {
         };
     }
 
-    pub fn blend(self: *const Self, other: *const Self) RGB {
+    pub fn blend(self: *const RGB, other: *const RGB) RGB {
         return .{
             .r = @min(255.0, 0.5 * self.r + 0.5 * other.r),
             .g = @min(255.0, 0.5 * self.g + 0.5 * other.g),
@@ -48,7 +47,7 @@ pub const RGB = struct {
         };
     }
 
-    pub fn saturate(self: *const Self, factor: f32) !RGB {
+    pub fn saturate(self: *const RGB, factor: f32) !RGB {
         var rgb1 = RGB{ .r = self.r / 255.0, .g = self.g / 255.0, .b = self.b / 255.0 };
         var hsl = HSL.fromRGB(&rgb1);
 
@@ -141,11 +140,15 @@ pub const RGB = struct {
         return CMYK.toRGB(from);
     }
 
-    pub fn toHSV(rgb: *const Self) HSV {
+    pub fn fromXYZ(from: *const XYZ) RGB {
+        return XYZ.toRGB(from);
+    }
+
+    pub fn toHSV(rgb: *const RGB) HSV {
         return HSV.fromRGB(rgb);
     }
 
-    pub fn toHSL(self: *const Self) HSL {
+    pub fn toHSL(self: *const RGB) HSL {
         return HSL.fromRGB(self);
     }
 
@@ -161,11 +164,15 @@ pub const RGB = struct {
         return CMYK.fromRGB(self);
     }
 
-    pub fn toYIQ(self: *const Self) YIQ {
+    pub fn toYIQ(self: *const RGB) YIQ {
         return YIQ.fromRGB(self);
     }
 
-    pub fn toHEX(self: *const Self) i32 {
+    pub fn toXYZ(self: *const RGB) XYZ {
+        return XYZ.fromRGB(self);
+    }
+
+    pub fn toHEX(self: *const RGB) i32 {
         const r = @as(i32, @intFromFloat(self.r));
         const g = @as(i32, @intFromFloat(self.g));
         const b = @as(i32, @intFromFloat(self.b));

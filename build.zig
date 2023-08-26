@@ -18,6 +18,9 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
 
+    lib.linkLibC();
+    lib_shared.linkLibC();
+
     const prism_mod = b.createModule(.{ .source_file = .{ .path = "src/prism.zig" } });
 
     const shades = b.addExecutable(.{

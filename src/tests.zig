@@ -125,3 +125,20 @@ test "ASCII color printing" {
     print("\x1b[38;2;{d:.0};{d:.0};{d:.0}m  Velvet Violet\x1b[0m", .{ vv.r, vv.g, vv.b });
     print("\x1b[38;2;{d:.0};{d:.0};{d:.0}m  Pacific Pink\x1b[0m\n", .{ pp.r, pp.g, pp.b });
 }
+
+test "sRGB->CIE XYZ" {
+    const c = prism.colors.Red;
+    const o = spaces.XYZ.fromRGB(&c);
+
+    std.debug.print("\n{d}, {d}, {d}\n", .{ o.x, o.y, o.z });
+}
+
+test "CIE XYZ->sRGB" {
+    const c = spaces.XYZ.fromRGB(&prism.colors.Red);
+    const o = c.toRGB();
+    const e = prism.colors.Red;
+
+    print("\n{d}, {d}, {d}\n", .{ c.x, c.y, c.z });
+    print("{d}, {d}, {d}\n", .{ e.r, e.g, e.b });
+    print("{d}, {d}, {d}\n", .{ o.r, o.g, o.b });
+}

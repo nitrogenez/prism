@@ -10,6 +10,7 @@ pub const spaces = struct {
     pub const CMYK = @import("colorspaces/cmyk.zig").CMYK;
     pub const HSI = @import("colorspaces/hsi.zig").HSI;
     pub const LAB = @import("colorspaces/lab.zig").LAB;
+    pub const XYZ = @import("colorspaces/xyz.zig").XYZ;
 };
 
 pub const colors = struct {
