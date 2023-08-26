@@ -39,8 +39,6 @@ test "RGB->HSV" {
 }
 
 test "RGB->YIQ" {
-    prism.config.unstable_features = true;
-
     const c = prism.colors.Red;
     const o = c.toYIQ();
     const e = spaces.YIQ{ .y = 0.30, .i = 0.60, .q = 0.21 };
