@@ -1,9 +1,5 @@
 const std = @import("std");
 const math = std.math;
-
-const clamp = math.clamp;
-const floor = math.floor;
-
 const RGB = @import("rgb.zig").RGB;
 
 pub const HSI = struct {
@@ -54,9 +50,9 @@ pub const HSI = struct {
             };
         }
 
-        o.r = clamp(floor(o.r), 0.0, 255.0);
-        o.g = clamp(floor(o.g), 0.0, 255.0);
-        o.b = clamp(floor(o.b), 0.0, 255.0);
+        o.r = math.clamp(o.r, 0.0, 255.0);
+        o.g = math.clamp(o.g, 0.0, 255.0);
+        o.b = math.clamp(o.b, 0.0, 255.0);
 
         return o;
     }

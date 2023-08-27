@@ -62,6 +62,12 @@ pub const LAB = struct {
         var n = from.normalized();
         var rgb: [3]f32 = .{ n.r, n.g, n.b };
 
+        const mat: [3][3]f32 = .{
+            .{ 0.412453, 0.357580, 0.180423 },
+            .{ 0.212671, 0.715160, 0.072169 },
+            .{ 0.019334, 0.119193, 0.950227 },
+        };
+
         for (rgb, 0..) |c, i| {
             if (c > 0.04045) {
                 rgb[i] = math.pow(f32, (c + 0.055) / 1.055, 2.4);
@@ -78,10 +84,9 @@ pub const LAB = struct {
         n.g = rgb[1];
         n.b = rgb[2];
 
-        // TODO: Make that thing a matrix multiplication
-        xyz[0] = ((n.r * 0.412453) + (n.g * 0.357580) + (n.b * 0.180423));
-        xyz[1] = ((n.r * 0.212671) + (n.g * 0.715160) + (n.b * 0.072169));
-        xyz[2] = ((n.r * 0.019334) + (n.g * 0.119193) + (n.b * 0.950227));
+        for (mat, 0..) |k, i| {
+            xyz[i] = (rgb[0] * k[0]) + (rgb[1] * k[1]) + (rgb[2] * k[2]);
+        }
 
         xyz[0] /= 95.047;
         xyz[1] /= 100.0;
