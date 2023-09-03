@@ -24,7 +24,7 @@ pub const RGB = struct {
     }
 
     pub fn monochrome(self: *const RGB) f32 {
-        const xyz: XYZ = XYZ.fromRGB(self)
+        const xyz: XYZ = XYZ.fromRGB(self);
         return xyz.y;
     }
 
