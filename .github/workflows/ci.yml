@@ -10,8 +10,7 @@ on:
     paths:
       - "**.zig"
   schedule:
-    branches: [ main ]
-    - cron: '30 6 * * *'
+    - cron: "30 6 * * *"
 
 jobs:
   build:
