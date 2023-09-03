@@ -2,16 +2,16 @@ name: "Prism CI build"
 
 on:
   push:
-    branches: ["main"]
+    branches: [ main ]
     paths:
       - "**.zig"
   pull_request:
-    branches: ["main"]
+    branches: [ main ]
     paths:
       - "**.zig"
   schedule:
-    branches: ["main"]
-    - cron: "30 6 * * *"
+    branches: [ main ]
+    - cron: '30 6 * * *'
 
 jobs:
   build:
