@@ -23,6 +23,11 @@ pub const RGB = struct {
         };
     }
 
+    pub fn monochrome(self: *const RGB) f32 {
+        const xyz: XYZ = XYZ.fromRGB(self)
+        return xyz.y;
+    }
+
     pub fn lighten(self: *const RGB, factor: f32) RGB {
         return .{
             .r = @min(255.0, self.r * factor),
