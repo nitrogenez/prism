@@ -19,9 +19,11 @@
 
 Prism is a utility library for managing colors and colorspaces written in Zig.
 
-> **NOTE**  
-> Prism is still under active development.  
-> Please, raise an issue, if you encounter any bugs.
+> **WARNING**  
+> There are ongoing major API changes. Please, be cautious  
+> and follow the development process. All changes are  
+> documented in the code directly. Old API is already  
+> set to be deprecated.
 
 # Why Prism?
 Prism is lightweight, fast, and easy to use in general. There is no boilerplate, just import the library, and start using colors and convert them into any of supported colorspaces, including CIE l\*a\*b\*, which is a highly useful colorspace for working with colors that our eyes actually percept.
@@ -60,22 +62,24 @@ If you are willing to make Prism better (or worse), you may follow the instructi
 9. You're GTG, enjoy your profile pic in a contributors list :)
 
 # Colorspace Support
-| NAME | STATE       |
-| ---- | ----------- |
-| CMYK | **FULL**    |
-| HSI  | **PARTIAL** |
-| HSL  | **FULL**    |
-| LAB  | **FULL**    |
-| YIQ  | **PARITAL** |
-| HSV  | **FULL**    |
-| RGB  | **FULL**    |
-| XYZ  | **FULL**    |
+| NAME | STATE       | NEW          |
+| ---- | ----------- | ------------ |
+| CMYK | **FULL**    | **NO**       |
+| HSI  | **PARTIAL** | **IN TODOS** |
+| HSL  | **FULL**    | **FULL**     |
+| LAB  | **FULL**    | **IN TODOS** |
+| YIQ  | **PARITAL** | **NO**       |
+| HSV  | **FULL**    | **PARTIAL**  |
+| RGB  | **FULL**    | **FULL**     |
+| XYZ  | **FULL**    | **FULL**     |
 
 ### Meaning
 + **NAME** - Name of the colorspace
 + **STATE** - A colorspace support state
   + **FULL** - A full-featured colorspace support
   + **PARTIAL** - It kinda works, but is lacking functionality
+  + **NO** - No support at all
+  + **IN TODOS** - Planned and yet to be implemented
 
 # License
 Prism is licensed under a **BSD-3-Clause "New" or "Revised" License**. See [LICENSE](LICENSE) to learn more.

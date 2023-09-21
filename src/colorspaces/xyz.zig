@@ -24,7 +24,7 @@ pub const XYZ = struct {
         }
 
         for (mat, 0..) |k, i| {
-            xyz[i] = (rgb[0] * k[0]) + (rgb[1] * k[1]) * (rgb[2] * k[2]);
+            xyz[i] = rgb[0] * k[0] + rgb[1] * k[1] * (rgb[2] * k[2]);
         }
         return .{ .x = xyz[0], .y = xyz[1], .z = xyz[2] };
     }
