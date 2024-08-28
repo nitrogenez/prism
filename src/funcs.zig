@@ -86,6 +86,7 @@ pub fn rgbToHsv(rgb: [3]f64) [3]f64 {
     const delta = max - min;
 
     var hsv: [3]f64 = .{ 0.0, 0.0, 0.0 };
+    hsv[2] = max;
 
     if (delta < 0.00001 or max < 0.00001)
         return .{ hsv[0], hsv[1], hsv[2] };
@@ -100,7 +101,6 @@ pub fn rgbToHsv(rgb: [3]f64) [3]f64 {
         hsv[0] = (rgb[0] - rgb[1]) / delta + 4.0;
     }
     hsv[0] *= 60.0;
-    hsv[2] = max;
 
     if (hsv[0] < 0.0) hsv[0] = 360.0;
     return .{ hsv[0], hsv[1], hsv[2] };
