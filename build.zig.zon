@@ -1,4 +1,9 @@
 .{
     .name = "prism",
     .version = "0.2.0",
+    .paths = .{
+        "src",
+        "build.zig",
+        "build.zig.zon",
+    },
 }
