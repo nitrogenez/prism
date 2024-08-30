@@ -280,6 +280,54 @@ pub fn yiqToRgb(yiq: [3]f64) [3]f64 {
     return out;
 }
 
+/// Converts XYZ to LUV.
+pub fn xyzToLuv(xyz: [3]f64) [3]f64 {
+    const y = xyz[1] / util.xyz_whiteref[1];
+    const l = if (y > util.xyz_epsilon) 116.0 * std.math.cbrt(y) - 16.0 else util.xyz_kappa * y;
+
+    const denom_tgt = getXyzDenominator(xyz);
+    const denom_ref = getXyzDenominator(util.xyz_whiteref);
+
+    const x_tgt = if (denom_tgt <= 0.00001) 0.0 else (4.0 * xyz[0] / denom_tgt) - (4.0 * util.xyz_whiteref[0] / denom_ref);
+    const y_tgt = if (denom_tgt <= 0.00001) 0.0 else (9.0 * xyz[1] / denom_tgt) - (9.0 * util.xyz_whiteref[1] / denom_ref);
+
+    const u = 13.0 * l * x_tgt;
+    const v = 13.0 * l * y_tgt;
+    return [3]f64{ l, u, v };
+}
+
+/// Converts LUV to XYZ.
+pub fn luvToXyz(luv: [3]f64) [3]f64 {
+    // that's TOO FUCKING MUCH math for me i'm sorry for whoever reads this
+    const c: f64 = -1.0 / 3.0;
+    const u_prime: f64 = (4.0 * util.xyz_whiteref[0]) / getXyzDenominator(util.xyz_whiteref);
+    const v_prime: f64 = (9.0 * util.xyz_whiteref[1]) / getXyzDenominator(util.xyz_whiteref);
+    const a: f64 = (1.0 / 3.0) * ((52.0 * luv[0]) / (luv[1] + 13.0 * luv[0] * u_prime) - 1.0);
+    const imtel: f64 = (luv[0] + 16.0) / 116.0;
+    const y: f64 = if (luv[0] > util.xyz_kappa * util.xyz_epsilon) imtel * imtel * imtel else luv[0] / util.xyz_kappa;
+    const b: f64 = -5.0 * y;
+    const d: f64 = y * ((39.0 * luv[0]) / (luv[2] + 13.0 * luv[0] * v_prime) - 5.0);
+    const x: f64 = (d - b) / (a - c);
+    const z: f64 = x * a + b;
+    return [3]f64{ 100.0 * x, 100.0 * y, 100.0 * z };
+}
+
+/// Converts RGB to LUV.
+pub fn rgbToLuv(rgb: [3]f64) [3]f64 {
+    const xyz = rgbToXyz(rgb); // you won't convert rgb to luv directly anyway.
+    return xyzToLuv(xyz);
+}
+
+/// Converts LUV to RGB.
+pub fn luvToRgb(luv: [3]f64) [3]f64 {
+    const xyz = luvToXyz(luv);
+    return xyzToRgb(xyz);
+}
+
+pub fn getXyzDenominator(xyz: [3]f64) f64 {
+    return xyz[0] + 15.0 * xyz[1] + 3.0 * xyz[2];
+}
+
 test "allDecls" {
     std.testing.refAllDecls(@This());
 }

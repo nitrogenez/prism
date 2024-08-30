@@ -73,12 +73,13 @@ If you are willing to make Prism better (or worse), you may follow the instructi
 | HSV  | **FULL**    |
 | RGB  | **FULL**    |
 | XYZ  | **FULL**    |
+| LUV  | **FULL**    |
 
 ### Meaning
 + **NAME** - Name of the colorspace
 + **STATE** - Colorspace support state
-  + **FULL** - A full-featured colorspace support
-  + **PARTIAL** - It kinda works, but is lacking functionality
+  + **FULL** - A full-featured colorspace support (conversion to and from RGB or anything else)
+  + **PARTIAL** - It kinda works, but is lacking functionality (only data type / acknowledged)
   + **NO** - No support at all
   + **TODO** - Planned and is yet to be implemented
 

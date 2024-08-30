@@ -70,3 +70,7 @@ pub const xyz_to_rgb_matrix = [3][3]f64{
     .{ -0.9692660, 1.8760108, 0.0415560 },
     .{ 0.0556434, -0.2040259, 1.0572252 },
 };
+
+pub const xyz_epsilon: f64 = 0.008856;
+pub const xyz_kappa: f64 = 903.3;
+pub const xyz_whiteref = [3]f64{ 95.047, 100.0, 108.883 };
