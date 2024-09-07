@@ -48,3 +48,19 @@ pub fn desaturate(rgb: [3]f64, amount: f64) [3]f64 {
     hsl[1] = std.math.clamp(hsl[1], 0.0, 1.0);
     return prism.hslToRgb(hsl);
 }
+
+/// Sets saturation `value` for `rgb`. RGB values must be normalized. `value` = 0...1
+pub fn setSaturation(rgb: [3]f64, value: f64) [3]f64 {
+    var hsl = prism.rgbToHsl(rgb);
+    hsl[1] = value;
+    hsl[1] = std.math.clamp(hsl[1], 0.0, 1.0);
+    return prism.hslToRgb(hsl);
+}
+
+/// Rotates the hue of `rgb`. `amount` = 0...1
+pub fn rotateHue(rgb: [3]f64, amount: f64) [3]f64 {
+    var hsl = prism.rgbToHsl(rgb);
+    hsl[0] += amount;
+    hsl[0] = std.math.clamp(hsl[0], 0.0, 360.0);
+    return prism.hslToRgb(hsl);
+}
