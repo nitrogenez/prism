@@ -1,3 +1,5 @@
+// Abandoned in favor of vectors.
+
 const std = @import("std");
 const util = @import("util.zig");
 
@@ -55,21 +57,20 @@ pub fn hsiToRgb(hsi: [3]f64) [3]f64 {
 pub fn rgbToHsi(rgb: [3]f64) [3]f64 {
     const max = @max(rgb[0], rgb[1], rgb[2]);
     const min = @min(rgb[0], rgb[1], rgb[2]);
-    const delta = max - min;
 
     var hsi: [3]f64 = .{ 0.0, 0.0, 0.0 };
 
-    if (delta < 0.00001 or max < 0.00001)
-        return .{ hsi[0], hsi[1], hsi[2] };
+    if ((max - min) < 0.00001 or max < 0.00001)
+        return hsi;
 
-    hsi[1] = (delta / max);
+    hsi[1] = ((max - min) / max);
 
     if (rgb[0] >= max) {
-        hsi[0] = (rgb[1] - rgb[2]) / delta;
+        hsi[0] = (rgb[1] - rgb[2]) / (max - min);
     } else if (rgb[1] >= max) {
-        hsi[0] = (rgb[2] - rgb[0]) / delta + 2.0;
+        hsi[0] = (rgb[2] - rgb[0]) / (max - min) + 2.0;
     } else {
-        hsi[0] = (rgb[0] - rgb[1]) / delta + 4.0;
+        hsi[0] = (rgb[0] - rgb[1]) / (max - min) + 4.0;
     }
 
     hsi[0] *= 60.0;

@@ -16,39 +16,31 @@
 Prism is a utility library for managing colors and colorspaces written in Zig.
 
 # Why Prism?
-Prism is lightweight, fast, and easy to use in general. There is no boilerplate, just import the library, and start using colors and convert them into any of supported colorspaces, including CIE l\*a\*b\*, which is a highly useful colorspace for working with colors that our eyes actually percept.
+Prism is a lightweight and performant piece of software powered by math. Zig's
+comptime optimizations coupled with static typing allows for a huge performance
+gain compared to other languages like C++, C#, Java, etc.
 
 # Usage
-Prism requires Zig version 0.13.0 to compile. First, fetch the library into your project using:
+Prism requires zig `0.14.0-dev.2577+271452d22` to compile.
+First, fetch the library into your project using:
 
 ```bash
-zig fetch --save https://github.com/nitrogenez/prism
+$ zig fetch --save https://github.com/nitrogenez/prism
 ```
 
 This will fetch the latest commit from the master branch. Next, you should add the following to your build.zig:
 
 ```zig
 const prism = b.dependency("prism", .{});
-mystep.root_module.addImport("prism", prism.module("prism"));
-```
-
-# Building
-Prism requires Zig version 0.13.0 to compile. To do so, simply run:
-
-```bash
-zig build
-```
-
-For more info see
-
-```bash
-zig build --help
+my_mod.addImport("prism", prism.module("prism"));
 ```
 
 # Contributing
-All the files must be formatted and linted with `zig fmt`. The code must be consistent and clean. If needed, use `// zig fmt: off` and `// zig fmt: on` comments.
+All the files must be formatted and linted with `zig fmt`. The code must be
+consistent and clean. If needed, use `// zig fmt: off` and `// zig fmt: on`.
 
-If you are willing to make Prism better (or worse), you may follow the instructions:
+If you are willing to make Prism better (or worse),
+you may follow the instructions:
 
 1. [Fork Prism](https://github.com/nitrogenez/prism/fork)
 2. Create a new branch using git, e.g `git checkout -b feat/myfeat`
@@ -75,7 +67,7 @@ If you are willing to make Prism better (or worse), you may follow the instructi
 | XYZ  | **FULL**    |
 | LUV  | **FULL**    |
 
-### Meaning
+### Legend
 + **NAME** - Name of the colorspace
 + **STATE** - Colorspace support state
   + **FULL** - A full-featured colorspace support (conversion to and from RGB or anything else)
@@ -84,7 +76,7 @@ If you are willing to make Prism better (or worse), you may follow the instructi
   + **TODO** - Planned and is yet to be implemented
 
 # License
-Prism is licensed under a **BSD-3-Clause "New" or "Revised" License**. See [LICENSE](LICENSE) to learn more.
+Prism is licensed under a 3-clause BSD ("New" or "Revised") License. See [LICENSE](LICENSE) to learn more.
 
 [proj-license]: https://img.shields.io/github/license/nitrogenez/prism?style=flat-square&logo=freebsd&labelColor=1f2335&color=7dcfff
 [proj-build-status]: https://img.shields.io/github/actions/workflow/status/nitrogenez/prism/ci.yml?style=flat-square&logo=github&labelColor=1f2335
